@@ -42,11 +42,11 @@ public class CoordinateEncoder extends Encoder<Tuple> implements CoordinateOrder
         /*
         *description has a {@link List} of {@link Tuple}s containing
         */
-        Tuple desc = new Tuple("coordinate", 0);
-        Tuple desc2 = new Tuple("radius", 1);
-        description.add(desc);
-        description.add(desc2);
-    }
+		Tuple desc = new Tuple("coordinate", 0);
+		Tuple desc2 = new Tuple("radius", 1);
+		description.add(desc);
+		description.add(desc2);
+	}
 
 	/**
 	 * @see Encoder for more information
@@ -77,8 +77,8 @@ public class CoordinateEncoder extends Encoder<Tuple> implements CoordinateOrder
 
 	/**
 	 * Returns coordinates around given coordinate, within given radius.
-     * Includes given coordinate.
-     *
+	 * Includes given coordinate.
+	 *
 	 * @param coordinate	Coordinate whose neighbors to find
 	 * @param radius		Radius around `coordinate`
 	 * @return
@@ -109,7 +109,7 @@ public class CoordinateEncoder extends Encoder<Tuple> implements CoordinateOrder
 	 *
 	 * @param co			Implementation of {@link CoordinateOrder}
 	 * @param coordinates	A 2D array, where each element
-                            is a coordinate
+	is a coordinate
 	 * @param w				(int) Number of top coordinates to return
 	 * @return
 	 */
@@ -117,15 +117,15 @@ public class CoordinateEncoder extends Encoder<Tuple> implements CoordinateOrder
 	public int[][] topWCoordinates(CoordinateOrder co, int[][] coordinates, int w) {
 		SortablePair<Double, Integer>[] pairs = new SortablePair[coordinates.length];
 		for(int i = 0; i < coordinates.length;i++) {
-		    pairs[i] = new SortablePair<Double, Integer>(co.orderForCoordinate(coordinates[i]), i);
+			pairs[i] = new SortablePair<Double, Integer>(co.orderForCoordinate(coordinates[i]), i);
 		}
 
 		Arrays.sort(pairs);
 
 		int[][] topCoordinates = new int[w][];
 		for(int i = 0, wIdx = pairs.length - w; i < w; i++, wIdx++) {
-		    int index = pairs[wIdx].second();
-		    topCoordinates[i] = coordinates[index];
+			int index = pairs[wIdx].second();
+			topCoordinates[i] = coordinates[index];
 		}
 		return topCoordinates;
 	}
@@ -136,7 +136,7 @@ public class CoordinateEncoder extends Encoder<Tuple> implements CoordinateOrder
 	 * @param coordinate	coordinate array
 	 *
 	 * @return	A value in the interval [0, 1), representing the
-     *          order of the coordinate
+	 *          order of the coordinate
 	 */
 	@Override
 	public double orderForCoordinate(int[] coordinate) {
@@ -164,7 +164,8 @@ public class CoordinateEncoder extends Encoder<Tuple> implements CoordinateOrder
 	public void encodeIntoArray(Tuple inputData, int[] output) {
 		List<int[]> neighs = neighbors((int[])inputData.get(0), (double)inputData.get(1));
 		int[][] neighbors = new int[neighs.size()][];
-		for(int i = 0;i < neighs.size();i++) neighbors[i] = neighs.get(i);
+		// for(int i = 0;i < neighs.size();i++) neighbors[i] = neighs.get(i);
+		neighbors = neighs.toArray(neighbors);
 
 		int[][] winners = topWCoordinates(this, neighbors, w);
 
@@ -211,8 +212,8 @@ public class CoordinateEncoder extends Encoder<Tuple> implements CoordinateOrder
 
 			if(n <= 6 * w) {
 				throw new IllegalArgumentException(
-					"n must be an int strictly greater than 6*w. For " +
-                       "good results we recommend n be strictly greater than 11*w");
+						"n must be an int strictly greater than 6*w. For " +
+								"good results we recommend n be strictly greater than 11*w");
 			}
 
 			if(name == null || name.equals("None")) {
